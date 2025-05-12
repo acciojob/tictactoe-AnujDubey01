@@ -29,6 +29,9 @@ button {
     margin-top: 24px;
     padding-inline: 24px;
     padding: 12px;
+	font-size: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 #submit {
@@ -58,19 +61,14 @@ button {
     display: none;
     /* Hide initially */
     margin-top: 20px;
-}
-.board {
-  display: none;
-  margin-top: 20px;
-  align-items: center;
-  justify-content: center;
-}
-.board.grid {
-  display: grid;
-  gap: 5px;
-  justify-content: center;
-}
+} 
 
+.board {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    justify-content: center;
+}
 
 .rst-btn {
     display: flex;

@@ -39,6 +39,7 @@ submit.addEventListener("click", (event) => {
     player1Input.parentElement.style.display = "none";
     player2Input.parentElement.style.display = "none";
     submit.style.display = "none";
+	  reset.style.display = "block";
   } else {
     alert("Please enter names for both players.");
   }
