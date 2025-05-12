@@ -59,6 +59,18 @@ button {
     /* Hide initially */
     margin-top: 20px;
 }
+.board {
+  display: none;
+  margin-top: 20px;
+  align-items: center;
+  justify-content: center;
+}
+.board.grid {
+  display: grid;
+  gap: 5px;
+  justify-content: center;
+}
+
 
 .rst-btn {
     display: flex;
