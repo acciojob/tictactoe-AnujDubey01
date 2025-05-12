@@ -56,7 +56,7 @@ boxes.forEach((cell) => {
     if (winner) {
       messageDiv.innerText = `${
         winner === "X" ? player1Name : player2Name
-      } wins!`;
+      }congratulations you won! `;
       disableBoard();
       return;
     }
