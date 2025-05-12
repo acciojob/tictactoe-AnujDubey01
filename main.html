@@ -1,16 +1,60 @@
 <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Tic-Tac-toe</title>
+  </head>
+  <body>
+    <div class="list">
+      <h1>TIC TAC TOE</h1>
+      <div class="message"></div>
+      <form id="nameform">
+        <div class="info1">
+          <label for="player1">Player 1</label>
+          <input
+            type="text"
+            id="player1"
+            name="player1"
+            placeholder="Enter name"
+          />
+        </div>
 
-<html>
+        <div class="info1">
+          <label for="player2">Player 2</label>
+          <input
+            type="text"
+            id="player2"
+            name="player2"
+            placeholder="Enter name"
+          />
+        </div>
+      </form>
 
-<head>
-	<link rel="stylesheet" href="styles.css">
-</head>
+      <button id="submit">Start Game</button>
+    </div>
 
-<body>
-	<!-- the entire body must be written by student -->
-    <script type="text/javascript" src="./script.js">
-</script>
-
-</body>
-
+    <div id="board" class="board">
+      <div class="row">
+        <div class="cell" data-cell></div>
+        <div class="cell" data-cell></div>
+        <div class="cell" data-cell></div>
+      </div>
+      <div class="row">
+        <div class="cell" data-cell></div>
+        <div class="cell" data-cell></div>
+        <div class="cell" data-cell></div>
+      </div>
+      <div class="row">
+        <div class="cell" data-cell></div>
+        <div class="cell" data-cell></div>
+        <div class="cell" data-cell></div>
+      </div>
+    </div>
+    <div class="rst-btn">
+      <button id="reset">Reset Game</button>
+    </div>
+    <script src="script.js"></script>
+  </body>
 </html>
