@@ -30,12 +30,22 @@ body {
   margin-top: 20px;
 }
 
+#board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 300px;
+  height: 300px;
+  margin: 20px auto;
+}
+
 .cell {
-  background-color: #ddd;
-  font-size: 36px;
+  border: 1px solid #000;
+  font-size: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 100px; /* <- This is important! */
+  width: 100px;
   cursor: pointer;
 }
 
