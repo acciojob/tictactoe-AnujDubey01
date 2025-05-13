@@ -34,6 +34,14 @@ button {
     transition: background-color 0.3s, transform 0.2s;
 }
 
+button:hover {
+    background-color: rgb(180, 180, 180);
+}
+
+button:active {
+    transform: scale(0.95); /* Slightly reduce size on click */
+}
+
 #submit {
     background-color: rgb(215, 206, 206);
 }
@@ -57,6 +65,14 @@ button {
     margin: 3px;
 }
 
+.cell:hover {
+    background-color: rgba(200, 100, 100, 0.7); /* Lighten the color on hover */
+}
+
+.cell:active {
+    background-color: rgba(150, 50, 50, 0.5); /* Darken the color when clicked */
+}
+
 #board {
     display: none;
     /* Hide initially */
@@ -76,4 +92,19 @@ button {
     justify-content: center;
     padding: 12px;
     font-size: 22px;
+}
+
+
+@media (max-width: 600px) {
+    .cell {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        line-height: 40px;
+    }
+
+    button {
+        font-size: 18px;
+        padding: 10px;
+    }
 }
