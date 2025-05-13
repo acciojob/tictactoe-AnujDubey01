@@ -1,113 +1,82 @@
-// Get DOM elements
-const player1Input = document.querySelector("#player1");
-const player2Input = document.querySelector("#player2");
-const board = document.querySelector(".board");
+const player1Input = document.getElementById("player-1");
+const player2Input = document.getElementById("player-2");
+const submitBtn = document.getElementById("submit");
+const board = document.getElementById("board");
+const cells = document.querySelectorAll(".cell");
 const messageDiv = document.querySelector(".message");
-const boxes = document.querySelectorAll(".cell");
-const submit = document.querySelector("#submit");
-const reset = document.querySelector("#reset");
+const heading = document.querySelector("h1");
 
-// Game state variables
-let player1Name = "";
-let player2Name = "";
-let turnO = true; // true = player1 (X), false = player2 (O)
-let count = 0;
+let player1 = "";
+let player2 = "";
+let currentPlayer = "";
+let currentSymbol = "X";
+let gameActive = false;
 
 const winPatterns = [
-    [0, 1, 2],
-    [0, 3, 6],
-    [0, 4, 8],
-    [1, 4, 7],
-    [2, 5, 8],
-    [2, 4, 6],
-    [3, 4, 5],
-    [6, 7, 8],
+  [1,2,3],
+  [4,5,6],
+  [7,8,9],
+  [1,4,7],
+  [2,5,8],
+  [3,6,9],
+  [1,5,9],
+  [3,5,7]
 ];
 
-// Start Game button handler
-submit.addEventListener("click", (event) => {
-    event.preventDefault();
+submitBtn.addEventListener("click", () => {
+  player1 = player1Input.value.trim();
+  player2 = player2Input.value.trim();
 
-    player1Name = player1Input.value.trim();
-    player2Name = player2Input.value.trim();
+  if (!player1 || !player2) {
+    alert("Please enter both player names.");
+    return;
+  }
 
-    if (player1Name && player2Name) {
-        board.style.display = "grid";
-        messageDiv.innerText = `${player1Name}, you're up!`;
+  heading.style.display = "block";
+  board.style.display = "grid";
+  submitBtn.style.display = "none";
+  player1Input.style.display = "none";
+  player2Input.style.display = "none";
 
-        player1Input.parentElement.style.display = "none";
-        player2Input.parentElement.style.display = "none";
-        submit.style.display = "none";
-        reset.style.display = "block"; // Show reset button
+  currentPlayer = player1;
+  currentSymbol = "X";
+  gameActive = true;
+  messageDiv.innerText = `${currentPlayer}, you're up`;
+});
+
+cells.forEach(cell => {
+  cell.addEventListener("click", () => {
+    if (!gameActive || cell.innerText !== "") return;
+
+    cell.innerText = currentSymbol;
+
+    if (checkWinner(currentSymbol)) {
+      messageDiv.innerText = `${currentPlayer} congratulations you won!`;
+      gameActive = false;
+      return;
+    }
+
+    if ([...cells].every(c => c.innerText !== "")) {
+      messageDiv.innerText = "It's a draw!";
+      gameActive = false;
+      return;
+    }
+
+    // Switch player
+    if (currentSymbol === "X") {
+      currentSymbol = "O";
+      currentPlayer = player2;
     } else {
-        alert("Please enter names for both players.");
+      currentSymbol = "X";
+      currentPlayer = player1;
     }
+
+    messageDiv.innerText = `${currentPlayer}, you're up`;
+  });
 });
 
-// Cell click handler
-boxes.forEach((cell) => {
-    cell.addEventListener("click", () => {
-        if (cell.innerText !== "") return;
-
-        cell.innerText = turnO ? "X" : "O";
-        count++;
-
-        const winner = checkWinner();
-        if (winner) {
-            messageDiv.innerText = `${winner === "X" ? player1Name : player2Name} congratulations you won!`;
-            disableBoard();
-            return;
-        }
-
-        if (count === 9) {
-            messageDiv.innerText = "It's a draw!";
-            return;
-        }
-
-        turnO = !turnO;
-        messageDiv.innerText = `${turnO ? player1Name : player2Name}, you're up!`;
-    });
-});
-
-// Winner check function
-function checkWinner() {
-    for (let pattern of winPatterns) {
-        const [a, b, c] = pattern;
-        if (
-            boxes[a].innerText &&
-            boxes[a].innerText === boxes[b].innerText &&
-            boxes[a].innerText === boxes[c].innerText
-        ) {
-            return boxes[a].innerText; // Return the winner ('X' or 'O')
-        }
-    }
-    return null; // No winner
+function checkWinner(symbol) {
+  return winPatterns.some(pattern =>
+    pattern.every(id => document.getElementById(id.toString()).innerText === symbol)
+  );
 }
-
-// Disable board after win
-function disableBoard() {
-    boxes.forEach((cell) => {
-        cell.style.pointerEvents = "none";
-    });
-}
-
-// Reset button handler
-reset.addEventListener("click", () => {
-    player1Input.value = "";
-    player2Input.value = "";
-    player1Input.parentElement.style.display = "block";
-    player2Input.parentElement.style.display = "block";
-    submit.style.display = "block";
-    reset.style.display = "none"; // Hide reset button
-
-    board.style.display = "none"; // Hide the board
-    messageDiv.innerText = "";
-
-    boxes.forEach((cell) => {
-        cell.innerText = "";
-        cell.style.pointerEvents = "auto"; // Re-enable clicks
-    });
-
-    turnO = true; // Reset turn
-    count = 0; // Reset count
-});
