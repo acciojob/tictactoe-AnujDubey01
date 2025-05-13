@@ -1,82 +1,65 @@
-const player1Input = document.getElementById("player1");
-const player2Input = document.getElementById("player2");
-const submitBtn = document.getElementById("submit");
-const board = document.getElementById("board");
-const cells = document.querySelectorAll(".cell");
-const messageDiv = document.querySelector(".message");
-const heading = document.querySelector("h1");
+document.addEventListener("DOMContentLoaded", () => {
+    const player1Input = document.getElementById("player1");
+    const player2Input = document.getElementById("player2");
+    const submitBtn = document.getElementById("submit");
+    const message = document.querySelector(".message");
+    const gameDiv = document.getElementById("game");
+    const boardCells = document.querySelectorAll(".cell");
 
-let player1 = "";
-let player2 = "";
-let currentPlayer = "";
-let currentSymbol = "X";
-let gameActive = false;
+    let players = ["Player 1", "Player 2"];
+    let currentPlayer = "x";
+    let gameActive = false;
+    let boardState = ["", "", "", "", "", "", "", "", ""];
 
-const winPatterns = [
-  [1,2,3],
-  [4,5,6],
-  [7,8,9],
-  [1,4,7],
-  [2,5,8],
-  [3,6,9],
-  [1,5,9],
-  [3,5,7]
-];
+    submitBtn.addEventListener("click", () => {
+        players = [
+            player1Input.value.trim() || "Player 1",
+            player2Input.value.trim() || "Player 2"
+        ];
+        
+        gameDiv.style.display = "block";
+        message.textContent = `${players[0]}, you're up!`;
+        gameActive = true;
 
-submitBtn.addEventListener("click", () => {
-  player1 = player1Input.value.trim();
-  player2 = player2Input.value.trim();
+        // Reset board
+        boardState.fill("");
+        boardCells.forEach(cell => {
+            cell.textContent = "";
+        });
 
-  if (!player1 || !player2) {
-    alert("Please enter both player names.");
-    return;
-  }
+        currentPlayer = "x";  // Reset to first player
+    });
 
-  heading.style.display = "block";
-  board.style.display = "grid";
-  submitBtn.style.display = "none";
-  player1Input.style.display = "none";
-  player2Input.style.display = "none";
+    boardCells.forEach((cell, index) => {
+        cell.addEventListener("click", () => {
+            if (!gameActive || boardState[index] !== "") return;
 
-  currentPlayer = player1;
-  currentSymbol = "X";
-  gameActive = true;
-  messageDiv.innerText = `${currentPlayer}, you're up`;
+            boardState[index] = currentPlayer;
+            cell.textContent = currentPlayer;
+
+            setTimeout(() => {
+                if (checkWinner()) {
+                    message.textContent = `${currentPlayer === "x" ? players[0] : players[1]} congratulations you won!`;
+                    gameActive = false;
+                    return;
+                }
+
+                currentPlayer = currentPlayer === "x" ? "o" : "x";
+                message.textContent = `${currentPlayer === "x" ? players[0] : players[1]}, you're up!`;
+            }, 50);
+        });
+    });
+
+    function checkWinner() {
+        const winPatterns = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8],
+            [0, 3, 6], [1, 4, 7], [2, 5, 8],
+            [0, 4, 8], [2, 4, 6]
+        ];
+
+        return winPatterns.some(pattern => {
+            const [a, b, c] = pattern;
+            return boardState[a] && boardState[a] === boardState[b] && boardState[a] === boardState[c];
+        });
+    }
 });
-
-cells.forEach(cell => {
-  cell.addEventListener("click", () => {
-    if (!gameActive || cell.innerText !== "") return;
-
-    cell.innerText = currentSymbol;
-
-    if (checkWinner(currentSymbol)) {
-      messageDiv.innerText = `${currentPlayer} congratulations you won!`;
-      gameActive = false;
-      return;
-    }
-
-    if ([...cells].every(c => c.innerText !== "")) {
-      messageDiv.innerText = "It's a draw!";
-      gameActive = false;
-      return;
-    }
-
-    // Switch player
-    if (currentSymbol === "X") {
-      currentSymbol = "O";
-      currentPlayer = player2;
-    } else {
-      currentSymbol = "X";
-      currentPlayer = player1;
-    }
-
-    messageDiv.innerText = `${currentPlayer}, you're up`;
-  });
-});
-
-function checkWinner(symbol) {
-  return winPatterns.some(pattern =>
-    pattern.every(id => document.getElementById(id.toString()).innerText === symbol)
-  );
-}
