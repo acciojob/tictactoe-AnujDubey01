@@ -1,4 +1,5 @@
 // Get DOM elements
+cy.get('#1').click({ force: true });
 const player1Input = document.querySelector("#player1");
 const player2Input = document.querySelector("#player2");
 const board = document.querySelector(".board");
